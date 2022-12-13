@@ -3,7 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component'
 import { GifsModule } from './modules/gifs/gifs.module';
-import { SharedModule } from './shared/shared.module'
+import { SharedModule } from './shared/shared.module';
+import { HttpClientModule } from '@angular/common/http'
 
 @NgModule({
   declarations: [
@@ -11,6 +12,8 @@ import { SharedModule } from './shared/shared.module'
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
+
     SharedModule,
     GifsModule
   ],
