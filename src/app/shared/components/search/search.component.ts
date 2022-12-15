@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { GifsService } from '../../services/gifs.service';
+import { GifsService } from '../../../modules/gifs/services/gifs.service';
 
 @Component({
   selector: 'app-search',

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpParams } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { environment } from 'src/environments/environment'
 import { Gif, GifsResponse } from '../Interface/GifsResponses.interface'
@@ -9,6 +9,7 @@ import { Gif, GifsResponse } from '../Interface/GifsResponses.interface'
 export class GifsService {
   private _history: string[] = []
   private _APIKEY: string = environment.apiKey
+  private _APIURL: string = environment.apiUrl
 
   public result: Gif[] = []
   public last!: string
@@ -24,9 +25,14 @@ export class GifsService {
 
   buscarGifs(query?: string) {
     query = query?.trim().toLowerCase()
-    const URL = query
-      ? `https://api.giphy.com/v1/gifs/search?api_key=${this._APIKEY}&q=${query}&limit=10&offset=0&rating=g&lang=es`
-      : `https://api.giphy.com/v1/gifs/search?api_key=${this._APIKEY}&q=${this.last}&limit=10&offset=0&rating=g&lang=es`
+
+    const params = new HttpParams()
+      .set('api_key', this._APIKEY)
+      .set('limit', '10')
+      .set('q', query || this.last || 'random')
+      .set('offset', 0)
+      .set('lang', 'es')
+      .set('rating', 'g')
 
     if (query) {
       if (!this._history.includes(query)) {
@@ -37,9 +43,10 @@ export class GifsService {
       }
     }
 
-    this.http.get<GifsResponse>(URL).subscribe((response: GifsResponse) => {
-      console.log(response.data)
-      this.result = response.data
-    })
+    this.http.get<GifsResponse>(`${ this._APIURL}/search`, { params })
+      .subscribe((response: GifsResponse) => {
+        console.log(response.data)
+        this.result = response.data
+      })
   }
 }
